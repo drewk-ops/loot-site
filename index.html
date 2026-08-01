@@ -110,6 +110,20 @@
         }
 
         /* ---------- phone mockups ---------- */
+        .shots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 18px;
+            max-width: 1120px;
+            margin: 48px auto 12px;
+        }
+        .shots img {
+            width: 100%;
+            height: auto;
+            border-radius: 26px;
+            border: 1px solid rgba(212, 175, 55, .28);
+            box-shadow: 0 14px 44px rgba(0, 0, 0, .5);
+        }
         .stage {
             display: flex;
             justify-content: center;
@@ -357,71 +371,13 @@
             </p>
         </header>
 
-        <!--
-            TODO: replace these CSS phone mockups with real App Store screenshots once they are ready.
-            Drop the images into shots/ (JPEG, ~1800 px on the long side) and swap this .stage block
-            for a simple <div class="shots"> grid of <img src="shots/01-....jpg"> elements.
-        -->
-        <div class="stage reveal d3">
-            <div class="phone side" aria-hidden="true">
-                <div class="screen">
-                    <div class="scr-head">
-                        <span class="scr-title">Wardrobe</span>
-                        <span class="scr-sub">18 items</span>
-                    </div>
-                    <div class="inv-grid">
-                        <div class="slot">🧥</div>
-                        <div class="slot">👖</div>
-                        <div class="slot rare">👞</div>
-                        <div class="slot">🧣</div>
-                        <div class="slot">🎩</div>
-                        <div class="slot empty"></div>
-                    </div>
-                    <div class="bar">Save as outfit</div>
-                </div>
-            </div>
-
-            <div class="phone" aria-hidden="true">
-                <div class="screen">
-                    <div class="scr-head">
-                        <span class="scr-title">Inventory</span>
-                        <span class="scr-sub">142 items</span>
-                    </div>
-                    <div class="searchbar"><span>⌕</span><span>Search your stuff</span></div>
-                    <div class="inv-grid">
-                        <div class="slot rare">⌚<span class="qty">1</span></div>
-                        <div class="slot">🎧</div>
-                        <div class="slot">📷</div>
-                        <div class="slot">🧦<span class="qty">6</span></div>
-                        <div class="slot">🔦</div>
-                        <div class="slot">🧰</div>
-                        <div class="slot">☕</div>
-                        <div class="slot rare">💍</div>
-                        <div class="slot">🕶️</div>
-                        <div class="slot">📚<span class="qty">9</span></div>
-                        <div class="slot">🪑</div>
-                        <div class="slot empty"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="phone side" aria-hidden="true">
-                <div class="screen">
-                    <div class="scr-head">
-                        <span class="scr-title">Places</span>
-                        <span class="scr-sub">3</span>
-                    </div>
-                    <div class="rows">
-                        <div class="row"><span class="ico">🏠</span><span class="txt"><span class="nm">Home</span><br><span class="ct">Bedroom · 64</span></span><span class="arrow">›</span></div>
-                        <div class="row"><span class="ico">🧳</span><span class="txt"><span class="nm">Cabin suitcase</span><br><span class="ct">Packed · 12</span></span><span class="arrow">›</span></div>
-                        <div class="row"><span class="ico">🗄️</span><span class="txt"><span class="nm">Storage unit</span><br><span class="ct">Lisbon · 41</span></span><span class="arrow">›</span></div>
-                        <div class="row"><span class="ico">📦</span><span class="txt"><span class="nm">Winter box</span><br><span class="ct">In storage · 9</span></span><span class="arrow">›</span></div>
-                    </div>
-                </div>
-            </div>
+        <div class="shots reveal d3">
+            <img src="shots/01-inventory.jpg" alt="Inventory grid with categorized items and containers">
+            <img src="shots/02-item-detail.jpg" alt="Item detail showing where AA batteries are stored">
+            <img src="shots/03-search.jpg" alt="Search finding batteries in a desk drawer">
+            <img src="shots/04-outfit.jpg" alt="Outfit set laid out by equipment slots">
+            <img src="shots/05-inventory-dark.jpg" alt="Inventory grid in dark mode">
         </div>
-        <p class="caption reveal d4">A living grid of everything you own — and everything you packed away.</p>
-        <p class="stage-note reveal d4">Illustrative interface preview. App Store screenshots coming soon.</p>
 
         <section>
             <h2 class="reveal d1">What Loot does</h2>
