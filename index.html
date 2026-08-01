@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loot: RPG Home Inventory — your belongings, as a treasure grid</title>
+    <meta name="description" content="Loot turns your belongings into a beautiful RPG-style inventory. Snap a photo, it is cut out on your device and lands in your grid. Containers, places, instant search and outfit sets.">
+    <meta name="theme-color" content="#12100d">
+    <meta property="og:title" content="Loot: RPG Home Inventory">
+    <meta property="og:description" content="Your belongings, as a beautiful RPG-style inventory grid.">
+    <meta property="og:type" content="website">
+    <style>
+        :root {
+            --bg:        #12100d;
+            --bg-2:      #191510;
+            --panel:     #1d1913;
+            --panel-2:   #241f17;
+            --line:      #3a3125;
+            --gold:      #e0b45c;
+            --gold-soft: #f0d79a;
+            --gold-deep: #a8761e;
+            --text:      #ece5d8;
+            --muted:     #a2967f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ---------- ambient background ---------- */
+        .glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(760px 520px at 50% -8%, rgba(224,180,92,0.20), transparent 70%),
+                radial-gradient(620px 620px at 100% 22%, rgba(168,118,30,0.12), transparent 68%),
+                radial-gradient(560px 560px at 0% 68%, rgba(224,180,92,0.07), transparent 70%);
+        }
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            background-image:
+                linear-gradient(rgba(58,49,37,0.16) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(58,49,37,0.16) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(circle at 50% 30%, black, transparent 78%);
+            -webkit-mask-image: radial-gradient(circle at 50% 30%, black, transparent 78%);
+        }
+
+        .wrap { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 0 22px; }
+
+        /* ---------- hero ---------- */
+        header { text-align: center; padding: 84px 0 40px; }
+
+        .app-icon {
+            width: 116px; height: 116px;
+            border-radius: 26px;
+            display: block;
+            margin: 0 auto 26px;
+            box-shadow:
+                0 0 0 1px rgba(224,180,92,0.28),
+                0 18px 60px rgba(0,0,0,0.6),
+                0 0 90px rgba(224,180,92,0.18);
+        }
+
+        h1 {
+            font-size: clamp(2.1rem, 6vw, 3.3rem);
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #fff7e4 0%, var(--gold) 62%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .tagline {
+            font-size: clamp(1.02rem, 2.4vw, 1.22rem);
+            color: var(--muted);
+            max-width: 640px;
+            margin: 0 auto 12px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.74rem;
+            letter-spacing: 0.19em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(224,180,92,0.32);
+            border-radius: 999px;
+            padding: 6px 16px;
+            margin-bottom: 26px;
+            background: rgba(224,180,92,0.06);
+        }
+
+        /* ---------- phone mockups ---------- */
+        .stage {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: clamp(14px, 3.6vw, 40px);
+            padding: 46px 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .phone {
+            width: 226px;
+            flex: 0 0 auto;
+            border-radius: 34px;
+            padding: 9px;
+            background: linear-gradient(160deg, #4a3f2d, #191510 55%, #40361f);
+            box-shadow: 0 26px 70px rgba(0,0,0,0.62), 0 0 0 1px rgba(224,180,92,0.14);
+        }
+        .phone.side { width: 190px; opacity: 0.86; }
+
+        .screen {
+            border-radius: 27px;
+            background: linear-gradient(180deg, #1a1611 0%, #100e0b 100%);
+            padding: 16px 13px 15px;
+            position: relative;
+            overflow: hidden;
+            min-height: 386px;
+        }
+        .phone.side .screen { min-height: 330px; }
+        .screen::before {
+            content: "";
+            position: absolute;
+            top: 7px; left: 50%;
+            transform: translateX(-50%);
+            width: 62px; height: 5px;
+            border-radius: 3px;
+            background: rgba(236,229,216,0.16);
+        }
+
+        .scr-head {
+            margin: 12px 2px 13px;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+        .scr-title { font-size: 0.94rem; font-weight: 650; color: var(--gold-soft); letter-spacing: 0.01em; }
+        .scr-sub   { font-size: 0.63rem; color: var(--muted); }
+
+        .searchbar {
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(236,229,216,0.06);
+            border: 1px solid rgba(224,180,92,0.14);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 6px;
+            font-size: 0.62rem;
+            color: var(--muted);
+        }
+
+        .inv-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+        }
+        .phone.side .inv-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+        .slot {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            background: linear-gradient(160deg, rgba(224,180,92,0.10), rgba(236,229,216,0.02));
+            border: 1px solid rgba(224,180,92,0.20);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.32rem;
+            line-height: 1;
+            position: relative;
+        }
+        .phone.side .slot { font-size: 1.5rem; }
+        .slot.empty { background: rgba(236,229,216,0.02); border-style: dashed; border-color: rgba(224,180,92,0.13); }
+        .slot.rare {
+            border-color: rgba(224,180,92,0.62);
+            box-shadow: 0 0 16px rgba(224,180,92,0.22), inset 0 0 18px rgba(224,180,92,0.10);
+        }
+        .slot .qty {
+            position: absolute;
+            right: 4px; bottom: 2px;
+            font-size: 0.52rem;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .rows { display: flex; flex-direction: column; gap: 8px; }
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 9px;
+            border-radius: 10px;
+            background: rgba(236,229,216,0.035);
+            border: 1px solid rgba(224,180,92,0.14);
+        }
+        .row .ico { font-size: 1.05rem; line-height: 1; }
+        .row .nm { font-size: 0.68rem; font-weight: 600; color: var(--text); }
+        .row .ct { font-size: 0.57rem; color: var(--muted); white-space: nowrap; }
+        .row .txt { min-width: 0; }
+        .row .arrow { margin-left: auto; color: var(--gold); font-size: 0.72rem; }
+
+        .bar {
+            margin-top: 14px;
+            height: 30px;
+            border-radius: 9px;
+            background: linear-gradient(90deg, rgba(224,180,92,0.24), rgba(224,180,92,0.10));
+            border: 1px solid rgba(224,180,92,0.34);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.64rem;
+            font-weight: 650;
+            color: var(--gold-soft);
+        }
+
+        .caption {
+            text-align: center;
+            font-size: 0.76rem;
+            color: var(--muted);
+            padding: 14px 0 0;
+            letter-spacing: 0.03em;
+        }
+        .stage-note {
+            text-align: center;
+            font-size: 0.74rem;
+            color: rgba(162,150,127,0.7);
+            margin-top: 6px;
+        }
+
+        /* ---------- features ---------- */
+        section { padding: 58px 0; }
+
+        h2 {
+            font-size: clamp(1.45rem, 3.6vw, 2rem);
+            letter-spacing: -0.01em;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--gold-soft);
+        }
+        .section-sub { text-align: center; color: var(--muted); margin-bottom: 40px; font-size: 0.98rem; }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+            gap: 16px;
+        }
+
+        .feature {
+            background: linear-gradient(165deg, var(--panel-2), var(--panel));
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 26px 24px;
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+        .feature:hover {
+            transform: translateY(-4px);
+            border-color: rgba(224,180,92,0.42);
+            box-shadow: 0 16px 44px rgba(0,0,0,0.44), 0 0 0 1px rgba(224,180,92,0.10);
+        }
+        .feature .ficon {
+            width: 42px; height: 42px;
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.28rem;
+            margin-bottom: 15px;
+            background: rgba(224,180,92,0.11);
+            border: 1px solid rgba(224,180,92,0.25);
+        }
+        .feature h3 { font-size: 1.02rem; margin-bottom: 7px; color: var(--gold-soft); font-weight: 650; }
+        .feature p  { font-size: 0.9rem; color: var(--muted); }
+
+        /* ---------- device note ---------- */
+        .note {
+            border: 1px solid rgba(224,180,92,0.28);
+            background: linear-gradient(140deg, rgba(224,180,92,0.09), rgba(224,180,92,0.02));
+            border-radius: 18px;
+            padding: 30px 32px;
+            text-align: center;
+        }
+        .note strong { color: var(--gold-soft); }
+        .note p { color: var(--muted); max-width: 620px; margin: 0 auto; }
+
+        /* ---------- footer ---------- */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--line);
+            margin-top: 30px;
+            padding: 34px 22px 44px;
+            text-align: center;
+        }
+        footer nav { margin-bottom: 14px; }
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+            display: inline-block;
+        }
+        footer a:hover { color: var(--gold); }
+        .copy { color: rgba(162,150,127,0.62); font-size: 0.82rem; }
+
+        /* ---------- entrance animation ---------- */
+        .reveal { opacity: 0; transform: translateY(18px); animation: rise 0.85s cubic-bezier(.2,.7,.3,1) forwards; }
+        .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.16s; }
+        .d3 { animation-delay: 0.27s; } .d4 { animation-delay: 0.38s; }
+        .d5 { animation-delay: 0.5s; }
+        @keyframes rise { to { opacity: 1; transform: none; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { animation: none; opacity: 1; transform: none; }
+            html { scroll-behavior: auto; }
+            .feature { transition: none; }
+        }
+
+        @media (max-width: 760px) {
+            header { padding: 56px 0 26px; }
+            .phone.side { display: none; }
+            section { padding: 42px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="grain"></div>
+
+    <div class="wrap">
+        <header>
+            <img class="app-icon reveal d1" src="icon.png" alt="Loot app icon">
+            <div class="eyebrow reveal d1">Home inventory, RPG style</div>
+            <h1 class="reveal d2">Loot: RPG Home Inventory</h1>
+            <p class="tagline reveal d3">
+                Turn your belongings into a beautiful RPG-style inventory. Snap a photo of an item — it is
+                cut out from the background on your device and lands in your grid.
+            </p>
+        </header>
+
+        <!--
+            TODO: replace these CSS phone mockups with real App Store screenshots once they are ready.
+            Drop the images into shots/ (JPEG, ~1800 px on the long side) and swap this .stage block
+            for a simple <div class="shots"> grid of <img src="shots/01-....jpg"> elements.
+        -->
+        <div class="stage reveal d3">
+            <div class="phone side" aria-hidden="true">
+                <div class="screen">
+                    <div class="scr-head">
+                        <span class="scr-title">Wardrobe</span>
+                        <span class="scr-sub">18 items</span>
+                    </div>
+                    <div class="inv-grid">
+                        <div class="slot">🧥</div>
+                        <div class="slot">👖</div>
+                        <div class="slot rare">👞</div>
+                        <div class="slot">🧣</div>
+                        <div class="slot">🎩</div>
+                        <div class="slot empty"></div>
+                    </div>
+                    <div class="bar">Save as outfit</div>
+                </div>
+            </div>
+
+            <div class="phone" aria-hidden="true">
+                <div class="screen">
+                    <div class="scr-head">
+                        <span class="scr-title">Inventory</span>
+                        <span class="scr-sub">142 items</span>
+                    </div>
+                    <div class="searchbar"><span>⌕</span><span>Search your stuff</span></div>
+                    <div class="inv-grid">
+                        <div class="slot rare">⌚<span class="qty">1</span></div>
+                        <div class="slot">🎧</div>
+                        <div class="slot">📷</div>
+                        <div class="slot">🧦<span class="qty">6</span></div>
+                        <div class="slot">🔦</div>
+                        <div class="slot">🧰</div>
+                        <div class="slot">☕</div>
+                        <div class="slot rare">💍</div>
+                        <div class="slot">🕶️</div>
+                        <div class="slot">📚<span class="qty">9</span></div>
+                        <div class="slot">🪑</div>
+                        <div class="slot empty"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone side" aria-hidden="true">
+                <div class="screen">
+                    <div class="scr-head">
+                        <span class="scr-title">Places</span>
+                        <span class="scr-sub">3</span>
+                    </div>
+                    <div class="rows">
+                        <div class="row"><span class="ico">🏠</span><span class="txt"><span class="nm">Home</span><br><span class="ct">Bedroom · 64</span></span><span class="arrow">›</span></div>
+                        <div class="row"><span class="ico">🧳</span><span class="txt"><span class="nm">Cabin suitcase</span><br><span class="ct">Packed · 12</span></span><span class="arrow">›</span></div>
+                        <div class="row"><span class="ico">🗄️</span><span class="txt"><span class="nm">Storage unit</span><br><span class="ct">Lisbon · 41</span></span><span class="arrow">›</span></div>
+                        <div class="row"><span class="ico">📦</span><span class="txt"><span class="nm">Winter box</span><br><span class="ct">In storage · 9</span></span><span class="arrow">›</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="caption reveal d4">A living grid of everything you own — and everything you packed away.</p>
+        <p class="stage-note reveal d4">Illustrative interface preview. App Store screenshots coming soon.</p>
+
+        <section>
+            <h2 class="reveal d1">What Loot does</h2>
+            <p class="section-sub reveal d1">Everything you own, finally in one place you enjoy opening.</p>
+            <div class="features">
+                <div class="feature reveal d1">
+                    <div class="ficon">🎒</div>
+                    <h3>RPG-style inventory grid</h3>
+                    <p>Your belongings laid out as a game inventory — tidy slots, clear icons, satisfying to browse.</p>
+                </div>
+                <div class="feature reveal d1">
+                    <div class="ficon">✂️</div>
+                    <h3>On-device photo cut-outs</h3>
+                    <p>Snap an item and it is lifted from its background right on your iPhone, then dropped into your grid.</p>
+                </div>
+                <div class="feature reveal d2">
+                    <div class="ficon">📦</div>
+                    <h3>Containers within containers</h3>
+                    <p>Mark a wardrobe, a drawer or a suitcase as a container and nest them as deep as your real life goes.</p>
+                </div>
+                <div class="feature reveal d2">
+                    <div class="ficon">🗺️</div>
+                    <h3>Places for multi-city life</h3>
+                    <p>Keep track of what is stored where — the flat you live in, the storage unit in another city, a friend's attic.</p>
+                </div>
+                <div class="feature reveal d3">
+                    <div class="ficon">🔍</div>
+                    <h3>Instant search</h3>
+                    <p>Type a word and find the thing — plus the container and the place it currently lives in.</p>
+                </div>
+                <div class="feature reveal d3">
+                    <div class="ficon">👔</div>
+                    <h3>Outfit sets</h3>
+                    <p>Save combinations you love and pull the whole look back up whenever you need it.</p>
+                </div>
+                <div class="feature reveal d4">
+                    <div class="ficon">🌙</div>
+                    <h3>Works offline</h3>
+                    <p>Your inventory is stored on your device and opens instantly, plane mode included. No account needed.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="note reveal d1">
+                <h2 style="margin-bottom:12px">Your stuff stays your stuff</h2>
+                <p>
+                    Photos and records live <strong>on your device</strong>. Background removal runs
+                    <strong>on your device</strong>. Loot <strong>works offline</strong> and needs
+                    <strong>no account</strong> — see the <a href="privacy.html" style="color:var(--gold)">Privacy Policy</a> for details.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <nav>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="support.html">Support</a>
+            <a href="terms.html">Terms of Use</a>
+            <a href="mailto:kozlovskyaid@icloud.com">kozlovskyaid@icloud.com</a>
+        </nav>
+        <p class="copy">© 2026 Andrew Kozlowskiy</p>
+    </footer>
+</body>
+</html>

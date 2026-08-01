@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support — Loot: RPG Home Inventory</title>
+    <meta name="description" content="Support and FAQ for Loot: RPG Home Inventory — items, containers, places, search and outfits.">
+    <meta name="theme-color" content="#12100d">
+    <style>
+        :root {
+            --bg:        #12100d;
+            --panel:     #1c1813;
+            --panel-2:   #221d16;
+            --line:      #383024;
+            --gold:      #e0b45c;
+            --gold-soft: #f0d79a;
+            --text:      #e8e2d6;
+            --muted:     #a89c85;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.72;
+            color: var(--text);
+            background: var(--bg);
+            padding: 30px 20px 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: clamp(28px, 5vw, 52px);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 26px;
+            text-decoration: none;
+        }
+        .brand img { width: 40px; height: 40px; border-radius: 10px; }
+        .brand span { color: var(--gold-soft); font-weight: 650; font-size: 0.98rem; }
+        h1 {
+            font-size: clamp(1.7rem, 4.6vw, 2.1rem);
+            letter-spacing: -0.015em;
+            color: var(--gold-soft);
+            margin-bottom: 6px;
+        }
+        .subtitle { color: var(--muted); font-size: 0.94rem; margin-bottom: 30px; }
+        h2 {
+            font-size: 1.14rem;
+            color: var(--gold-soft);
+            margin: 36px 0 16px;
+            font-weight: 650;
+        }
+        p { color: var(--muted); margin-bottom: 13px; }
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .faq-item {
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            padding: 20px 22px;
+            margin-bottom: 12px;
+        }
+        .faq-item h3 {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 7px;
+            font-weight: 620;
+        }
+        .faq-item p { margin: 0; font-size: 0.94rem; }
+
+        .contact-box {
+            border: 1px solid rgba(224,180,92,0.32);
+            background: linear-gradient(140deg, rgba(224,180,92,0.10), rgba(224,180,92,0.02));
+            border-radius: 16px;
+            padding: 30px;
+            margin: 36px 0 10px;
+            text-align: center;
+        }
+        .contact-box h2 { margin: 0 0 6px; }
+        .contact-box p { margin-bottom: 16px; }
+        .contact-box a.btn {
+            display: inline-block;
+            background: var(--gold);
+            color: #17130d;
+            padding: 11px 28px;
+            border-radius: 10px;
+            font-weight: 650;
+            font-size: 0.94rem;
+            text-decoration: none;
+        }
+        .contact-box a.btn:hover { background: var(--gold-soft); text-decoration: none; }
+
+        ul.info { list-style: none; padding: 0; }
+        ul.info li {
+            color: var(--muted);
+            margin-bottom: 9px;
+            padding-left: 22px;
+            position: relative;
+        }
+        ul.info li::before {
+            content: "";
+            position: absolute;
+            left: 4px; top: 0.72em;
+            width: 6px; height: 6px;
+            border-radius: 2px;
+            background: var(--gold);
+            opacity: 0.7;
+            transform: rotate(45deg);
+        }
+        ul.info li strong { color: var(--text); font-weight: 620; }
+
+        .footer {
+            margin-top: 42px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+            color: rgba(168,156,133,0.7);
+            font-size: 0.86rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer nav a { margin-right: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a class="brand" href="index.html">
+            <img src="icon.png" alt="">
+            <span>Loot: RPG Home Inventory</span>
+        </a>
+
+        <h1>Support</h1>
+        <p class="subtitle">Loot: RPG Home Inventory for iOS</p>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+            <h3>How do I add an item?</h3>
+            <p>Tap the add button and take a photo of the item, or pick one from your photo library. Loot lifts the item from its background and drops it into your inventory grid, where you can give it a name, a category, tags, a quantity and a note.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Why does the app ask for camera and photo permissions?</h3>
+            <p>The camera is used to photograph items you are adding, and photo library access lets you pick pictures you already have. You can review or change both permissions at any time in iOS Settings → Loot.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Where does the background removal happen?</h3>
+            <p>On your device. The cut-out is produced by your iPhone while you add the item, so it works the same in a basement, on a plane or anywhere with no signal.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What is a container?</h3>
+            <p>Any item can be marked as a container — a wardrobe, a drawer, a toolbox, a suitcase. Once it is a container, you can put other items inside it, and containers can be nested inside other containers, as deep as your real storage goes.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What is the difference between a container and a place?</h3>
+            <p>A place is where things physically are: your flat, a storage unit in another city, a parent’s attic. A container is a thing that holds other things. A suitcase (container) can move between places, and everything inside it moves with it.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How do I find something quickly?</h3>
+            <p>Use search and type any part of the name, category or tag. Results show the item together with the container and the place it currently lives in, so you know exactly where to go looking.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What are outfit sets?</h3>
+            <p>Outfits are saved combinations of items you like wearing together. Build one from the pieces in your inventory, name it, and pull the whole look back up whenever you want it.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Does Loot work without an internet connection?</h3>
+            <p>Yes. Your inventory is stored on your device and opens offline. No account or sign-in is needed to use the app.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How do I delete an item or my whole inventory?</h3>
+            <p>Delete individual items or photos from inside the app at any time. To remove everything, delete the inventory in the app or uninstall Loot from your device.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>I found a bug or have a feature idea</h3>
+            <p>Please write to <a href="mailto:kozlovskyaid@icloud.com">kozlovskyaid@icloud.com</a>. Telling us your iPhone model, iOS version and what you were doing at the time helps a lot.</p>
+        </div>
+
+        <div class="contact-box">
+            <h2>Need more help?</h2>
+            <p>Questions, problems and suggestions are all welcome.</p>
+            <a class="btn" href="mailto:kozlovskyaid@icloud.com">Contact Support</a>
+        </div>
+
+        <h2>App Information</h2>
+        <ul class="info">
+            <li><strong>App Store name:</strong> Loot: RPG Home Inventory</li>
+            <li><strong>Name on device:</strong> Loot</li>
+            <li><strong>Platform:</strong> iPhone</li>
+            <li><strong>Contact:</strong> <a href="mailto:kozlovskyaid@icloud.com">kozlovskyaid@icloud.com</a></li>
+        </ul>
+
+        <div class="footer">
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Use</a>
+            </nav>
+            <span>© 2026 Andrew Kozlowskiy</span>
+        </div>
+    </div>
+</body>
+</html>
