@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open in Loot</title>
+    <meta name="description" content="Open a shared Loot container in the Loot: Personal Inventory app.">
+    <meta name="theme-color" content="#12100d">
+    <meta name="robots" content="noindex">
+    <style>
+        :root {
+            --bg:        #12100d;
+            --panel:     #1d1913;
+            --panel-2:   #241f17;
+            --line:      #3a3125;
+            --gold:      #e0b45c;
+            --gold-soft: #f0d79a;
+            --gold-deep: #a8761e;
+            --text:      #ece5d8;
+            --muted:     #a2967f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 20px;
+            overflow-x: hidden;
+        }
+
+        .glow {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(760px 520px at 50% -8%, rgba(224,180,92,0.20), transparent 70%),
+                radial-gradient(560px 560px at 0% 78%, rgba(224,180,92,0.07), transparent 70%);
+        }
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.55;
+            background-image:
+                linear-gradient(rgba(58,49,37,0.16) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(58,49,37,0.16) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(circle at 50% 34%, black, transparent 78%);
+            -webkit-mask-image: radial-gradient(circle at 50% 34%, black, transparent 78%);
+        }
+
+        .card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(165deg, var(--panel-2), var(--panel));
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 38px 30px 32px;
+            text-align: center;
+            box-shadow: 0 22px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(224,180,92,0.07);
+            opacity: 0;
+            transform: translateY(16px);
+            animation: rise 0.7s cubic-bezier(.2,.7,.3,1) forwards;
+        }
+        @keyframes rise { to { opacity: 1; transform: none; } }
+
+        .app-icon {
+            width: 76px; height: 76px;
+            border-radius: 18px;
+            display: block;
+            margin: 0 auto 18px;
+            box-shadow:
+                0 0 0 1px rgba(224,180,92,0.28),
+                0 12px 36px rgba(0,0,0,0.55),
+                0 0 60px rgba(224,180,92,0.16);
+        }
+
+        .brand {
+            font-size: 0.74rem;
+            letter-spacing: 0.19em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            line-height: 1.25;
+            letter-spacing: -0.015em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, #fff7e4 0%, var(--gold) 66%, var(--gold-deep) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        p.lead { color: var(--muted); font-size: 0.95rem; margin-bottom: 22px; }
+
+        .ref {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+            border: 1px solid rgba(224,180,92,0.22);
+            background: rgba(224,180,92,0.06);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin-bottom: 24px;
+        }
+        .ref .lbl {
+            font-size: 0.63rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .ref .val {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gold-soft);
+            letter-spacing: 0.04em;
+        }
+
+        .btn {
+            display: block;
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, rgba(224,180,92,0.30), rgba(224,180,92,0.14));
+            border: 1px solid rgba(224,180,92,0.44);
+            color: var(--gold-soft);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 650;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(224,180,92,0.7);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.42), 0 0 0 1px rgba(224,180,92,0.12);
+        }
+
+        .secondary {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 0.88rem;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(162,150,127,0.32);
+            padding-bottom: 1px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .secondary:hover { color: var(--gold); border-color: rgba(224,180,92,0.5); }
+
+        .hint { color: rgba(162,150,127,0.68); font-size: 0.8rem; margin-top: 18px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card { animation: none; opacity: 1; transform: none; }
+            .btn { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="grain"></div>
+
+    <main class="card">
+        <img class="app-icon" src="../icon.png" alt="Loot app icon">
+        <div class="brand">Loot &middot; Personal Inventory</div>
+
+        <h1 id="title">Open this container in Loot</h1>
+        <p class="lead" id="lead">Tap the button below and Loot will take you straight to it.</p>
+
+        <div class="ref" id="ref" hidden>
+            <span class="lbl">Container</span>
+            <span class="val" id="shortId"></span>
+        </div>
+
+        <a class="btn" id="openBtn" href="#" hidden>Open in Loot</a>
+
+        <a class="secondary" href="../">Learn about Loot</a>
+
+        <p class="hint" id="hint" hidden>Loot opens this container once the app is installed on your iPhone.</p>
+    </main>
+
+    <script>
+        (function () {
+            var UUID_RE = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+            function param(name) {
+                try {
+                    if (typeof URLSearchParams === 'function') {
+                        return new URLSearchParams(window.location.search).get(name);
+                    }
+                    var m = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.search);
+                    return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : null;
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            function byId(id) { return document.getElementById(id); }
+
+            var raw = param('u');
+            var uuid = (raw && UUID_RE.test(raw.trim())) ? raw.trim().toLowerCase() : null;
+
+            if (!uuid) {
+                byId('title').textContent = 'Loot: Personal Inventory';
+                byId('lead').textContent =
+                    'This link opens a container inside the Loot app. Head to the main page to see what Loot can do.';
+                return;
+            }
+
+            byId('shortId').textContent = uuid.slice(0, 8);
+            byId('ref').hidden = false;
+
+            var btn = byId('openBtn');
+            btn.setAttribute('href', 'loot://container/' + encodeURIComponent(uuid));
+            btn.hidden = false;
+
+            byId('hint').hidden = false;
+        })();
+    </script>
+</body>
+</html>
